@@ -27,8 +27,8 @@ jobs:
       - name: Vérifier la nouvelle installation de Python
         run: python --version
 
-#      - name: Installer les dépendances
-#        run: pip install -r requirements.txt
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
 
       - name: Exécuter les tests avec pytest
-        run: pytest
+        run: python -m pytest
