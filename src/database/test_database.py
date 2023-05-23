@@ -247,9 +247,9 @@ def test_measure():
 
 
 
-test_user_insert()
-test_user_update()
-test_user_delete()
-test_user_select()
-test_token()
-test_measure()
+# test_user_insert()
+# test_user_update()
+# test_user_delete()
+# test_user_select()
+# test_token()
+# test_measure()
