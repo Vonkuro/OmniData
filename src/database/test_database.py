@@ -3,7 +3,7 @@ import datetime
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-import database as db
+import Database as db
 
 def generate_database():
     # si la base de données exite on supprimer
