@@ -1,3 +1,7 @@
 pytest==6.2.4
 sqlite3worker
 passlib
+flask
+requests
+fastapi
+httpx

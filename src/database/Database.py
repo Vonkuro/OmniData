@@ -40,36 +40,36 @@ def GenerateToken(userID: int) -> str:
 
 @dataclass
 class UserType:
-    id: Union[int, None]
-    username: Union[str, None]
-    password: Union[str, None]
+    id: Union[int, None] = None
+    username: Union[str, None] = None
+    password: Union[str, None] = None
 
 @dataclass
 class TokenType:
-    id: Union[int, None]
-    userID: Union[int, None]
-    accessToken: Union[str, None]
-    refreshToken: Union[str, None]
-    expiration: Union[str, None]
+    id: Union[int, None] = None
+    userID: Union[int, None] = None
+    accessToken: Union[str, None] = None
+    refreshToken: Union[str, None] = None
+    expiration: Union[str, None] = None
 
 @dataclass
 class ComponentType:
-    id: Union[int, None]
-    userID: Union[int, None]
-    name: Union[str, None]
+    id: Union[int, None] = None
+    userID: Union[int, None] = None
+    name: Union[str, None] = None
 
 @dataclass
 class UniteType:
-    id: Union[int, None]
-    componentID: Union[int, None]
-    name: Union[str, None]
+    id: Union[int, None] = None
+    componentID: Union[int, None] = None
+    name: Union[str, None] = None
 
 @dataclass
 class MeasureType:
-    id: Union[int, None]
-    uniteID: Union[int, None]
-    value: Union[str, None]
-    datetime: Union[str, None]
+    id: Union[int, None] = None
+    uniteID: Union[int, None] = None
+    value: Union[str, None] = None
+    datetime: Union[str, None] = None
 
 
 class UserTable:
@@ -373,7 +373,7 @@ class UniteTable:
         result: list[tuple] = database.execute("SELECT * FROM unite WHERE id = ?", [unite.id])
         return [UniteType(*row) for row in result]
     @staticmethod
-    def SelectBy_ComponentID(unite: UniteType) -> list[UniteType]:
+    def SelectBy_ComponentID(component: ComponentType) -> list[UniteType]:
         """
         Select a measure in the database by componentID
             :param measure:
@@ -381,7 +381,7 @@ class UniteTable:
                 "componentID": int
             }
         """
-        result: list[tuple] = database.execute("SELECT * FROM unite WHERE componentID = ?", [unite.componentID])
+        result: list[tuple] = database.execute("SELECT * FROM unite WHERE componentID = ?", [component.id])
         return [UniteType(*row) for row in result]
     @staticmethod
     def SelectBy_Name(unite: UniteType) -> list[UniteType]:
