@@ -1,6 +1,5 @@
 import fastapi
 import os
-import uvicorn
 from dataclasses import dataclass
 import datetime
 import json
