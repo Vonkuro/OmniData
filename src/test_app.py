@@ -185,7 +185,6 @@ def test_delete_component_by_id():
 
 
 
-
 def test_create_unites():
     response = testApp.post("/api/user/login", json={
         "username": "test",
@@ -319,23 +318,164 @@ def test_delete_unites_by_id():
     })
     assert response.status_code == 404
 
+def test_create_measure():
+    response = testApp.post("/api/user/login", json={
+        "username": "test",
+        "password": "test"
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)["accessToken"]
+
+    access_token = json.loads(response.text)["accessToken"]
+
+    response = testApp.post("/api/measures/add/", json={
+        "token":{
+            "accessToken": access_token
+        },
+        "measure":{
+            "datetime": "2021-01-01 00:00:00",
+            "value": 1.1,
+            "uniteID": 2
+        }
+    })
+    assert response.status_code == 201
+
+    response = testApp.post("/api/measures/add/", json={
+        "token":{
+            "accessToken": access_token
+        },
+        "measure":{
+            "datetime": "2021-01-01 00:00:00",
+            "value": 18,
+            "uniteID": 2
+        }
+    })
+    assert response.status_code == 201
+    
+    response = testApp.post("/api/measures/add/", json={
+        "token":{
+            "accessToken": "issou"
+        },
+        "measure":{
+            "datetime": "2021-01-01 00:00:00",
+            "value": 18,
+            "uniteID": 9
+        }
+    })
+    assert response.status_code == 401
+    return
+def test_getall_measure():
+    response = testApp.post("/api/user/login", json={
+        "username": "test",
+        "password": "test"
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)["accessToken"]
+
+    access_token = json.loads(response.text)["accessToken"]
+
+    response = testApp.post("/api/measures", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)[0]
+    assert len(json.loads(response.text)) == 2
+    return
+def test_get_measure_by_id():
+    response = testApp.post("/api/user/login", json={
+        "username": "test",
+        "password": "test"
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)["accessToken"]
+
+    access_token = json.loads(response.text)["accessToken"]
+
+    response = testApp.post("/api/measures/1", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)
+    assert json.loads(response.text)["value"] == "1.1"
+    assert json.loads(response.text)["datetime"] == "2021-01-01 00:00:00"
+
+    response = testApp.post("/api/measures/2", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)
+    assert json.loads(response.text)["value"] == "18"
+    assert json.loads(response.text)["datetime"] == "2021-01-01 00:00:00"
+
+    response = testApp.post("/api/measures/3", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 404
+def test_get_measure_by_unite_id():
+    response = testApp.post("/api/user/login", json={
+        "username": "test",
+        "password": "test"
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)["accessToken"]
+
+    access_token = json.loads(response.text)["accessToken"]
+
+    response = testApp.post("/api/measures/unite/2", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)[0]
+    assert len(json.loads(response.text)) == 2
+
+    response = testApp.post("/api/measures/unite/9", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 404
+def test_delete_measure():
+    response = testApp.post("/api/user/login", json={
+        "username": "test",
+        "password": "test"
+    })
+    assert response.status_code == 200
+    assert json.loads(response.text)["accessToken"]
+
+    access_token = json.loads(response.text)["accessToken"]
+
+    response = testApp.post("/api/measures/delete/1", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 200
+
+    response = testApp.post("/api/measures/1", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 404
+
+    response = testApp.post("/api/measures/delete/1", json={
+        "accessToken": access_token
+    })
+    assert response.status_code == 404
 
 
 
-
-# if __name__ == "__main__":
-#     test_create_app()
-#     test_create_user()
-#     test_login_user()
-#     test_refresh_token()
-#     test_create_component()
-#     test_getall_components()
-#     test_get_component_by_id()
-#     test_delete_component_by_id()
-#     test_create_unites()
-#     test_getall_unites()
-#     test_get_unites_by_id()
-#     test_get_unites_by_component_id()
-#     test_delete_unites_by_id()
-
+if __name__ == "__main__":
+    test_create_app()
+    test_create_user()
+    test_login_user()
+    test_refresh_token()
+    test_create_component()
+    test_getall_components()
+    test_get_component_by_id()
+    test_delete_component_by_id()
+    test_create_unites()
+    test_getall_unites()
+    test_get_unites_by_id()
+    test_get_unites_by_component_id()
+    test_delete_unites_by_id()
+    test_create_measure()
+    test_getall_measure()
+    test_get_measure_by_id()
+    test_get_measure_by_unite_id()
+    test_delete_measure()    
 

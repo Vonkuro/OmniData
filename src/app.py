@@ -433,7 +433,7 @@ def MeasuresGetByID(id: int, token: db.TokenType):
         return fastapi.Response(status_code=404)
     if len(db.MeasureTable.SelectBy_ID(db.MeasureType(id=id))) > 1:
         return fastapi.Response(status_code=500)
-    return fastapi.Response(status_code=200, content=json.dumps(db.MeasureTable.SelectBy_ID(db.MeasureType(id=id))[0].__dict__), cls=JsonEncoder)
+    return fastapi.Response(status_code=200, content=json.dumps(db.MeasureTable.SelectBy_ID(db.MeasureType(id=id))[0].__dict__, cls=JsonEncoder))
 
 @app.post("/api/measures/unite/{id}")
 def MeasuresGetByUniteID(id: int, token: db.TokenType):
@@ -456,7 +456,7 @@ def MeasuresGetByUniteID(id: int, token: db.TokenType):
         return fastapi.Response(status_code=404)
     if len(db.UniteTable.SelectBy_ID(db.UniteType(id=id))) > 1:
         return fastapi.Response(status_code=500)
-    return fastapi.Response(status_code=200, content=json.dumps(db.MeasureTable.SelectBy_UniteID(db.UniteType(id=id)), cls=JsonEncoder))
+    return fastapi.Response(status_code=200, content=json.dumps(db.MeasureTable.SelectBy_UniteID(db.MeasureType(uniteID=id)), cls=JsonEncoder))
 
 @app.post("/api/measures/add/")
 def MeasuresAdd(token: db.TokenType, measure: db.MeasureType):
@@ -468,11 +468,10 @@ def MeasuresAdd(token: db.TokenType, measure: db.MeasureType):
         }
         :param measure:
         {
-            "name": str,
-            "description": str,
-            "uniteID": int
+            "uniteID": int,
+            "value": float,
+            "datetime": str
         }
-
     """
     if len(db.TokenTable.SelectBy_AccessToken(token)) == 0:
         return fastapi.Response(status_code=401)
